@@ -2,5 +2,10 @@
 name = "ascii-rs"
 version = "0.1.0"
 edition = "2021"
+authors = ["Sebastian Szyller <contact@sebszyller.com>"]
+description = "Quickly convert images to ascii (art)."
 
 [dependencies]
+anyhow =  "1.0.95"
+clap =    "4.5.27"
+image =   "0.25.5"
