@@ -5,8 +5,11 @@ edition = "2021"
 authors = ["Sebastian Szyller <contact@sebszyller.com>"]
 description = "Quickly convert images to ascii (art)."
 
+[lints.rust]
+unused = "allow"
+
 [dependencies]
-anyhow =  "1.0.95"
-clap =    "4.5.27"
+anyhow = "1.0.95"
+clap = { version = "4.5.27", features=["derive"] }
 colored = "3.0.0"
-image =   "0.25.5"
+image = "0.25.5"

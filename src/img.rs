@@ -4,6 +4,7 @@ use std::io::BufReader;
 
 use anyhow::{Context, Result};
 use colored::Colorize;
+use image::GenericImageView;
 
 pub fn read_image(img_path: &str) -> Result<DynamicImage> {
     let file = File::open(img_path)
@@ -19,7 +20,19 @@ pub fn read_image(img_path: &str) -> Result<DynamicImage> {
     Ok(img)
 }
 
-pub fn print_pixels(pixels: Pixels<DynamicImage>) {
+pub fn to_ascii(img: &DynamicImage) {
+    let line_width = img.width() - 1;
+
+    for (x, _, pixel) in img.pixels() {
+        let colored = "x".truecolor(pixel[0], pixel[1], pixel[2]);
+        print!("{}", colored);
+        if x == line_width {
+            print!("\n");
+        }
+    }
+}
+
+pub fn print_pixel_values(pixels: Pixels<DynamicImage>) {
     for (x, y, pixel) in pixels {
         let formatted = format!("Pixel at ({}, {}): {:?}", x, y, pixel);
         let colored = formatted.on_truecolor(pixel[0], pixel[1], pixel[2]);
