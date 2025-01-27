@@ -25,6 +25,23 @@ fn random_char_from(options: Vec<char>) -> char {
     options.choose(&mut rand::rng()).unwrap().to_owned()
 }
 
+// TODO: new tests for this
+pub fn downsize(img: DynamicImage, width: u32, height: u32) -> DynamicImage {
+    assert!(
+        width <= img.width(),
+        "Provided width larger than the image width! ({} > {})",
+        width,
+        img.width()
+    );
+    assert!(
+        height <= img.height(),
+        "Provided height larger than the image height! ({} > {})",
+        height,
+        img.height()
+    );
+    img.resize(width, height, image::imageops::FilterType::Lanczos3)
+}
+
 pub fn to_ascii(img: &DynamicImage) {
     let line_width = img.width() - 1;
 
