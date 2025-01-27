@@ -8,4 +8,5 @@ description = "Quickly convert images to ascii (art)."
 [dependencies]
 anyhow =  "1.0.95"
 clap =    "4.5.27"
+colored = "3.0.0"
 image =   "0.25.5"
