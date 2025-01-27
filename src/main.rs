@@ -15,6 +15,9 @@ struct Args {
 
     #[arg(long, value_name = "MAX_HEIGHT")]
     height: Option<u32>,
+
+    #[arg(long, value_name = "SEED", default_value = "1234567890")]
+    seed: u64,
 }
 
 fn main() -> Result<()> {
@@ -25,10 +28,10 @@ fn main() -> Result<()> {
     if args.width.is_some() || args.height.is_some() {
         let nwidth = args.width.unwrap_or(img.width());
         let nheight = args.height.unwrap_or(img.height());
-        img = img::downsize(img, nwidth, nheight);
+        img = img::downsize(&img, nwidth, nheight);
     }
 
-    img::to_ascii(&img);
+    img::to_ascii(&img, args.seed);
     // img::print_pixel_values(img.pixels());
     // img::print_img_details(&img);
     Ok(())

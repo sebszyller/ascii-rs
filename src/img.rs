@@ -1,10 +1,12 @@
 use image::{DynamicImage, ImageReader, Pixels};
+use rand::{Rng, SeedableRng};
 use std::fs::File;
 use std::io::BufReader;
 
 use anyhow::{Context, Result};
 use colored::Colorize;
 use image::GenericImageView;
+use rand::rngs::StdRng;
 use rand::seq::IndexedRandom;
 
 pub fn read_image(img_path: &str) -> Result<DynamicImage> {
@@ -21,12 +23,12 @@ pub fn read_image(img_path: &str) -> Result<DynamicImage> {
     Ok(img)
 }
 
-fn random_char_from(options: Vec<char>) -> char {
-    options.choose(&mut rand::rng()).unwrap().to_owned()
+fn random_char_from(options: &Vec<char>, rng: &mut StdRng) -> char {
+    options.choose(rng).unwrap().to_owned()
 }
 
 // TODO: new tests for this
-pub fn downsize(img: DynamicImage, width: u32, height: u32) -> DynamicImage {
+pub fn downsize(img: &DynamicImage, width: u32, height: u32) -> DynamicImage {
     assert!(
         width <= img.width(),
         "Provided width larger than the image width! ({} > {})",
@@ -42,12 +44,14 @@ pub fn downsize(img: DynamicImage, width: u32, height: u32) -> DynamicImage {
     img.resize(width, height, image::imageops::FilterType::Lanczos3)
 }
 
-pub fn to_ascii(img: &DynamicImage) {
+pub fn to_ascii(img: &DynamicImage, seed: u64) {
     let line_width = img.width() - 1;
+    let mut prng = StdRng::seed_from_u64(seed);
+    let chars = vec![':', ';', '+', '*', '?', '%', 'S', '#', '@'];
 
     for (x, _, pixel) in img.pixels() {
-        let char = random_char_from(vec![':', ';', '+', '*', '?', '%', 'S', '#', '@']).to_string();
-        let colored = char.truecolor(pixel[0], pixel[1], pixel[2]);
+        let ch = random_char_from(&chars, &mut prng).to_string();
+        let colored = ch.truecolor(pixel[0], pixel[1], pixel[2]);
         print!("{}", colored);
         if x == line_width {
             print!("\n");
