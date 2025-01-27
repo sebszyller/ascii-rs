@@ -7,7 +7,7 @@ use image::GenericImageView;
 // https://docs.rs/clap/4.5.27/clap/_cookbook/typed_derive/index.html
 #[derive(Parser, Debug)]
 struct Args {
-    #[arg(long, value_name = "IMAGE_PATH", value_hint = clap::ValueHint::DirPath)]
+    #[arg(long, value_name = "IMAGE_PATH", value_hint = clap::ValueHint::FilePath)]
     image: String,
 
     #[arg(long, value_name = "MAX_WIDTH")]
