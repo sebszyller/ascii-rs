@@ -5,6 +5,7 @@ use std::io::BufReader;
 use anyhow::{Context, Result};
 use colored::Colorize;
 use image::GenericImageView;
+use rand::seq::IndexedRandom;
 
 pub fn read_image(img_path: &str) -> Result<DynamicImage> {
     let file = File::open(img_path)
@@ -20,11 +21,16 @@ pub fn read_image(img_path: &str) -> Result<DynamicImage> {
     Ok(img)
 }
 
+fn random_char_from(options: Vec<char>) -> char {
+    options.choose(&mut rand::rng()).unwrap().to_owned()
+}
+
 pub fn to_ascii(img: &DynamicImage) {
     let line_width = img.width() - 1;
 
     for (x, _, pixel) in img.pixels() {
-        let colored = "x".truecolor(pixel[0], pixel[1], pixel[2]);
+        let char = random_char_from(vec![':', ';', '+', '*', '?', '%', 'S', '#', '@']).to_string();
+        let colored = char.truecolor(pixel[0], pixel[1], pixel[2]);
         print!("{}", colored);
         if x == line_width {
             print!("\n");
