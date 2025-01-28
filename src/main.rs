@@ -17,6 +17,9 @@ struct Args {
     #[arg(long, value_name = "MAX_HEIGHT")]
     height: Option<u32>,
 
+    #[arg(long, value_name = "ASCII_CHARS", default_value = ":;+*?%S#@")]
+    chars: String,
+
     #[arg(long, value_name = "SEED", default_value = "1234567890")]
     seed: u64,
 }
@@ -32,7 +35,8 @@ fn main() -> Result<()> {
         img = img::downsize(&img, nwidth, nheight).with_context(|| "Failed to downsize image")?;
     }
 
-    ascii::to_ascii(&img, args.seed);
+    let mut ascii_img = ascii::ASCIIimg::init(img, args.chars, args.seed);
+    ascii_img.to_ascii();
     // img::print_pixel_values(img.pixels());
     // img::print_img_details(&img);
     Ok(())

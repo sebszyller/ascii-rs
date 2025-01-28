@@ -6,14 +6,14 @@ use image::{DynamicImage, GenericImageView, ImageReader, Pixels};
 
 pub fn read_image(img_path: &str) -> Result<DynamicImage> {
     let file = File::open(img_path)
-        .with_context(|| format!("Failed to read image from img_path: {}", img_path))?; // NOTE: we don't want to recover from this
+        .with_context(|| format!("Failed to read image from img_path: {}", img_path))?;
 
     let reader = BufReader::new(file);
     let img = ImageReader::new(reader)
         .with_guessed_format()
-        .with_context(|| format!("Could not guess format"))? // NOTE: we don't want to recover from this
+        .with_context(|| format!("Could not guess format"))?
         .decode()
-        .with_context(|| format!("Failed to decode image"))?; // NOTE: we don't want to recover from this
+        .with_context(|| format!("Failed to decode image"))?;
 
     Ok(img)
 }
