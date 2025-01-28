@@ -1,6 +1,6 @@
 mod img;
 
-use anyhow::Result;
+use anyhow::{Context, Result};
 use clap::Parser;
 use image::GenericImageView;
 
@@ -28,7 +28,7 @@ fn main() -> Result<()> {
     if args.width.is_some() || args.height.is_some() {
         let nwidth = args.width.unwrap_or(img.width());
         let nheight = args.height.unwrap_or(img.height());
-        img = img::downsize(&img, nwidth, nheight);
+        img = img::downsize(&img, nwidth, nheight).with_context(|| "Failed to downsize image")?;
     }
 
     img::to_ascii(&img, args.seed);

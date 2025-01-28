@@ -23,30 +23,10 @@ pub fn read_image(img_path: &str) -> Result<DynamicImage> {
     Ok(img)
 }
 
-fn random_char_from(options: &Vec<char>, rng: &mut StdRng) -> char {
-    options.choose(rng).unwrap().to_owned()
-}
-
-// TODO: new tests for this
-pub fn downsize(img: &DynamicImage, width: u32, height: u32) -> DynamicImage {
-    assert!(
-        width <= img.width(),
-        "Provided width larger than the image width! ({} > {})",
-        width,
-        img.width()
-    );
-    assert!(
-        height <= img.height(),
-        "Provided height larger than the image height! ({} > {})",
-        height,
-        img.height()
-    );
-    img.resize(width, height, image::imageops::FilterType::Lanczos3)
-}
-
 pub fn to_ascii(img: &DynamicImage, seed: u64) {
     let line_width = img.width() - 1;
     let mut prng = StdRng::seed_from_u64(seed);
+    // TODO: customise chars higher up
     let chars = vec![':', ';', '+', '*', '?', '%', 'S', '#', '@'];
 
     for (x, _, pixel) in img.pixels() {
@@ -57,6 +37,29 @@ pub fn to_ascii(img: &DynamicImage, seed: u64) {
             print!("\n");
         }
     }
+}
+
+// TODO: new tests for this
+pub fn downsize(img: &DynamicImage, width: u32, height: u32) -> Result<DynamicImage> {
+    if width > img.width() {
+        return Err(anyhow::anyhow!(
+            "Provided width larger than the image width! ({} > {})",
+            width,
+            img.width()
+        ))?;
+    }
+    if height > img.height() {
+        return Err(anyhow::anyhow!(
+            "Provided height larger than the image height! ({} > {})",
+            height,
+            img.height()
+        ))?;
+    }
+    Ok(img.resize(width, height, image::imageops::FilterType::Lanczos3))
+}
+
+fn random_char_from(options: &Vec<char>, rng: &mut StdRng) -> char {
+    options.choose(rng).unwrap().to_owned()
 }
 
 pub fn print_pixel_values(pixels: Pixels<DynamicImage>) {
