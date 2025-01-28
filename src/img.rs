@@ -2,7 +2,7 @@ use std::fs::File;
 use std::io::BufReader;
 
 use anyhow::{Context, Result};
-use image::{DynamicImage, GenericImageView, ImageReader, Pixels};
+use image::{DynamicImage, GenericImageView, GrayImage, ImageReader, Pixels};
 
 pub fn read_image(img_path: &str) -> Result<DynamicImage> {
     let file = File::open(img_path)
