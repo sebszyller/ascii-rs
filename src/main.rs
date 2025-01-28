@@ -1,3 +1,4 @@
+mod ascii;
 mod img;
 
 use anyhow::{Context, Result};
@@ -31,7 +32,7 @@ fn main() -> Result<()> {
         img = img::downsize(&img, nwidth, nheight).with_context(|| "Failed to downsize image")?;
     }
 
-    img::to_ascii(&img, args.seed);
+    ascii::to_ascii(&img, args.seed);
     // img::print_pixel_values(img.pixels());
     // img::print_img_details(&img);
     Ok(())

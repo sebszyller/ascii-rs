@@ -1,13 +1,8 @@
-use image::{DynamicImage, ImageReader, Pixels};
-use rand::{Rng, SeedableRng};
 use std::fs::File;
 use std::io::BufReader;
 
 use anyhow::{Context, Result};
-use colored::Colorize;
-use image::GenericImageView;
-use rand::rngs::StdRng;
-use rand::seq::IndexedRandom;
+use image::{DynamicImage, GenericImageView, ImageReader, Pixels};
 
 pub fn read_image(img_path: &str) -> Result<DynamicImage> {
     let file = File::open(img_path)
@@ -21,22 +16,6 @@ pub fn read_image(img_path: &str) -> Result<DynamicImage> {
         .with_context(|| format!("Failed to decode image"))?; // NOTE: we don't want to recover from this
 
     Ok(img)
-}
-
-pub fn to_ascii(img: &DynamicImage, seed: u64) {
-    let line_width = img.width() - 1;
-    let mut prng = StdRng::seed_from_u64(seed);
-    // TODO: customise chars higher up
-    let chars = vec![':', ';', '+', '*', '?', '%', 'S', '#', '@'];
-
-    for (x, _, pixel) in img.pixels() {
-        let ch = random_char_from(&chars, &mut prng).to_string();
-        let colored = ch.truecolor(pixel[0], pixel[1], pixel[2]);
-        print!("{}", colored);
-        if x == line_width {
-            print!("\n");
-        }
-    }
 }
 
 // TODO: new tests for this
@@ -58,15 +37,9 @@ pub fn downsize(img: &DynamicImage, width: u32, height: u32) -> Result<DynamicIm
     Ok(img.resize(width, height, image::imageops::FilterType::Lanczos3))
 }
 
-fn random_char_from(options: &Vec<char>, rng: &mut StdRng) -> char {
-    options.choose(rng).unwrap().to_owned()
-}
-
 pub fn print_pixel_values(pixels: Pixels<DynamicImage>) {
     for (x, y, pixel) in pixels {
-        let formatted = format!("Pixel at ({}, {}): {:?}", x, y, pixel);
-        let colored = formatted.on_truecolor(pixel[0], pixel[1], pixel[2]);
-        println!("{}", colored);
+        println!("Pixel at ({}, {}): {:?}", x, y, pixel);
     }
 }
 
