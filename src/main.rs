@@ -18,11 +18,17 @@ struct Args {
     #[arg(long, value_name = "MAX_HEIGHT")]
     height: Option<u32>,
 
-    #[arg(long, value_name = "ASCII_CHARS", default_value = "?%#@")]
-    chars: String,
+    #[arg(long, value_name = "LIGHT_CHARS", default_value = "?%#@")]
+    light_chars: String,
 
-    #[arg(long, value_name = "EDGE_CHAR", default_value = "+")]
+    #[arg(long, value_name = "HEAVY_CHARS", default_value = ".,o")]
+    heavy_chars: String,
+
+    #[arg(long, value_name = "edge_char", default_value = "+/\\")]
     edge_char: String,
+
+    #[arg(long, value_name = "LUMINANCE_THRESHOLD", default_value_t = 50.0)]
+    luma_threshold: f32,
 
     #[arg(long, value_name = "CANNY_LOW_THRESHOLD", default_value_t = 10.0)]
     canny_low_threshold: f32,
@@ -52,7 +58,14 @@ fn main() -> Result<()> {
     );
     let edges_img = DynamicImage::from(edges);
 
-    let mut ascii_img = ascii::ASCIIimg::init(img, args.chars, args.edge_char, args.seed);
+    let mut ascii_img = ascii::ASCIIimg::init(
+        img,
+        args.light_chars,
+        args.heavy_chars,
+        args.edge_char,
+        args.luma_threshold,
+        args.seed,
+    );
     ascii_img.to_ascii(&edges_img);
 
     // edges.save("edges.png")?;
