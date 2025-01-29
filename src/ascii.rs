@@ -35,9 +35,11 @@ impl ASCIIimg {
     pub fn to_ascii(&mut self, edges: &DynamicImage) {
         let line_width = self.img.width() - 1;
         let rgb = self.img.to_rgb8();
+        let edge_rgb = edges.to_rgb8();
 
         for (x, y, pixel) in rgb.enumerate_pixels() {
-            let ch = self.choose_char(pixel);
+            let edge_pixel = edge_rgb.get_pixel(x, y);
+            let ch = self.choose_char(pixel, &edge_pixel);
 
             let colored = ch.truecolor(pixel[0], pixel[1], pixel[2]);
             print!("{}", colored);
@@ -47,8 +49,8 @@ impl ASCIIimg {
         }
     }
 
-    fn choose_char(&mut self, pixel: &Rgb<u8>) -> String {
-        let char_set = if pixel[0] == 255 {
+    fn choose_char(&mut self, pixel: &Rgb<u8>, edge_pixel: &Rgb<u8>) -> String {
+        let char_set = if edge_pixel[0] == 255 {
             self.edge_chars.clone()
         } else {
             let luminance =
