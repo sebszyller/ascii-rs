@@ -5,6 +5,8 @@ use anyhow::{Context, Result};
 use clap::Parser;
 use image::{DynamicImage, GenericImageView};
 use imageproc::edges::canny;
+use rand::rngs::StdRng;
+use rand::{Rng, SeedableRng};
 
 // https://docs.rs/clap/4.5.27/clap/_cookbook/typed_derive/index.html
 #[derive(Parser, Debug)]
@@ -64,9 +66,10 @@ fn main() -> Result<()> {
         args.heavy_chars,
         args.edge_char,
         args.luma_threshold,
-        args.seed,
     );
-    ascii_img.to_ascii(&edges_img);
+
+    let mut prng = StdRng::seed_from_u64(args.seed);
+    ascii_img.to_ascii(&edges_img, &mut prng);
 
     // edges.save("edges.png")?;
     // img::print_pixel_values(img.pixels());
