@@ -7,6 +7,9 @@ use image::{DynamicImage, GenericImageView};
 use imageproc::edges::canny;
 use rand::rngs::StdRng;
 use rand::{Rng, SeedableRng};
+use tracing::{debug, error, info, trace, warn};
+use tracing_subscriber::filter::LevelFilter;
+use tracing_subscriber::{EnvFilter, FmtSubscriber};
 
 // https://docs.rs/clap/4.5.27/clap/_cookbook/typed_derive/index.html
 #[derive(Parser, Debug)]
@@ -43,14 +46,26 @@ struct Args {
 }
 
 fn main() -> Result<()> {
+    configure_tracing()?;
+
     let args = Args::parse();
-    // println!("{args:?}");
+    debug!("{args:?}");
 
     let mut img = img::read_image(&args.image)?;
     if args.width.is_some() || args.height.is_some() {
         let nwidth = args.width.unwrap_or(img.width());
         let nheight = args.height.unwrap_or(img.height());
+        debug!(
+            "Dimensions before downsizig: {}x{}",
+            img.width(),
+            img.height()
+        );
         img = img::downsize(&img, nwidth, nheight).with_context(|| "Failed to downsize image")?;
+        debug!(
+            "Dimensions after downsizig: {}x{}",
+            img.width(),
+            img.height()
+        );
     }
 
     let edges = canny(
@@ -75,5 +90,23 @@ fn main() -> Result<()> {
     // img::print_pixel_values(img.pixels());
     // img::print_pixel_values(edges.pixels());
     // img::print_img_details(&img);
+    Ok(())
+}
+
+fn configure_tracing() -> Result<()> {
+    let env_filter = EnvFilter::builder()
+        .with_default_directive(LevelFilter::INFO.into())
+        .from_env_lossy();
+
+    let subscriber = tracing_subscriber::fmt()
+        .with_env_filter(env_filter)
+        .compact()
+        .with_target(false)
+        .with_thread_ids(false)
+        .with_file(true)
+        .with_line_number(true)
+        .finish();
+
+    tracing::subscriber::set_global_default(subscriber)?;
     Ok(())
 }

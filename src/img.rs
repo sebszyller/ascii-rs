@@ -42,11 +42,3 @@ pub fn print_pixel_values(pixels: Pixels<DynamicImage>) {
         println!("Pixel at ({}, {}): {:?}", x, y, pixel);
     }
 }
-
-pub fn print_img_details(img: &DynamicImage) {
-    let width = img.width();
-    let height = img.height();
-
-    println!("Image loaded successfully!");
-    println!("Dimensions: {}x{}", width, height);
-}
