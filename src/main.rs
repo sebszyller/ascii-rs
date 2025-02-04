@@ -7,7 +7,7 @@ use image::{DynamicImage, GenericImageView};
 use imageproc::edges::canny;
 use rand::rngs::StdRng;
 use rand::{Rng, SeedableRng};
-use tracing::{debug, error, info, trace, warn};
+use tracing::debug;
 use tracing_subscriber::filter::LevelFilter;
 use tracing_subscriber::{EnvFilter, FmtSubscriber};
 
@@ -46,7 +46,7 @@ struct Args {
 }
 
 fn main() -> Result<()> {
-    configure_tracing()?;
+    configure_tracing().with_context(|| "Failed to configure tracing")?;
 
     let args = Args::parse();
     debug!("{args:?}");
