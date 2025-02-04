@@ -58,6 +58,8 @@ mod tests {
 
     #[test]
     fn test_downsize_long_edge() {
+        // image::resize preserves the ratio and respects the lower dimension
+        // 20x20 img resized to 5x10 should become 5x5
         let img = DynamicImage::new_rgb8(100, 100);
         let result = downsize(&img, 50, 100);
         assert!(result.is_ok());
