@@ -86,10 +86,11 @@ fn main() -> Result<()> {
     let mut prng = StdRng::seed_from_u64(args.seed);
     ascii_img.to_ascii(&edges_img, &mut prng);
 
-    // edges.save("edges.png")?;
-    // img::print_pixel_values(img.pixels());
-    // img::print_pixel_values(edges.pixels());
-    // img::print_img_details(&img);
+    if args.output_edges {
+        edges_img
+            .save("edges.png")
+            .with_context(|| "Failed to save edges.png")?;
+    }
     Ok(())
 }
 
