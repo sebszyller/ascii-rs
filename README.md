@@ -5,10 +5,12 @@
 Invoke help with `ascii-rs -h`:
 
 ```shell
-Usage: ascii-rs [OPTIONS] --image <IMAGE_PATH>
+Usage: ascii-rs [OPTIONS] <IMAGE_PATH>
+
+Arguments:
+  <IMAGE_PATH>
 
 Options:
-      --image <IMAGE_PATH>
       --width <MAX_WIDTH>
       --height <MAX_HEIGHT>
       --light-chars <LIGHT_CHARS>                       [default: ?%#@]

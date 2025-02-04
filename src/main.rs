@@ -14,7 +14,7 @@ use tracing_subscriber::{EnvFilter, FmtSubscriber};
 // https://docs.rs/clap/4.5.27/clap/_cookbook/typed_derive/index.html
 #[derive(Parser, Debug)]
 struct Args {
-    #[arg(long, value_name = "IMAGE_PATH", value_hint = clap::ValueHint::FilePath)]
+    #[arg(required = true, value_name = "IMAGE_PATH", index = 1, value_hint = clap::ValueHint::FilePath)]
     image: String,
 
     #[arg(long, value_name = "MAX_WIDTH")]
