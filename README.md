@@ -11,14 +11,18 @@ Options:
       --image <IMAGE_PATH>
       --width <MAX_WIDTH>
       --height <MAX_HEIGHT>
-      --light-chars <LIGHT_CHARS>                    [default: ?%#@]
-      --heavy-chars <HEAVY_CHARS>                    [default: .,o]
-      --edge-char <edge_char>                        [default: +/\]
-      --luma-threshold <LUMINANCE_THRESHOLD>         [default: 50]
-      --canny-low-threshold <CANNY_LOW_THRESHOLD>    [default: 10]
-      --canny-high-threshold <CANNY_HIGH_THRESHOLD>  [default: 50]
-      --seed <SEED>                                  [default: 1234567890]
-  -h, --help                                         Print help
+      --light-chars <LIGHT_CHARS>                       [default: ?%#@]
+      --medium-chars <MEDIUM_CHARS>                     [default: DOS]
+      --dark-chars <DARK_CHARS>                         [default: .,]
+      --edge-chars <EDGE_CHARS>                         [default: /\]
+      --luma-threshold-mid <LUMINANCE_THRESHOLD_MID>    [default: 50]
+      --luma-threshold-high <LUMINANCE_THRESHOLD_HIGH>  [default: 95]
+      --canny-threshold-low <CANNY_THRESHOLD_LOW>       [default: 10]
+      --canny-threshold-high <CANNY_THRESHOLD_HIGH>     [default: 50]
+      --no-colour
+      --output-edges
+      --seed <SEED>                                     [default: 1234567890]
+  -h, --help                                            Print help
 ```
 
 ## Feature milestones

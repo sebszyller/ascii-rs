@@ -26,20 +26,32 @@ struct Args {
     #[arg(long, value_name = "LIGHT_CHARS", default_value = "?%#@")]
     light_chars: String,
 
-    #[arg(long, value_name = "HEAVY_CHARS", default_value = ".,o")]
-    heavy_chars: String,
+    #[arg(long, value_name = "MEDIUM_CHARS", default_value = "DOS")]
+    medium_chars: String,
 
-    #[arg(long, value_name = "edge_char", default_value = "+/\\")]
-    edge_char: String,
+    #[arg(long, value_name = "DARK_CHARS", default_value = ".,")]
+    dark_chars: String,
 
-    #[arg(long, value_name = "LUMINANCE_THRESHOLD", default_value_t = 50.0)]
-    luma_threshold: f32,
+    #[arg(long, value_name = "EDGE_CHARS", default_value = "/\\")]
+    edge_chars: String,
 
-    #[arg(long, value_name = "CANNY_LOW_THRESHOLD", default_value_t = 10.0)]
-    canny_low_threshold: f32,
+    #[arg(long, value_name = "LUMINANCE_THRESHOLD_MID", default_value_t = 50.0)]
+    luma_threshold_mid: f32,
 
-    #[arg(long, value_name = "CANNY_HIGH_THRESHOLD", default_value_t = 50.0)]
-    canny_high_threshold: f32,
+    #[arg(long, value_name = "LUMINANCE_THRESHOLD_HIGH", default_value_t = 95.0)]
+    luma_threshold_high: f32,
+
+    #[arg(long, value_name = "CANNY_THRESHOLD_LOW", default_value_t = 10.0)]
+    canny_threshold_low: f32,
+
+    #[arg(long, value_name = "CANNY_THRESHOLD_HIGH", default_value_t = 50.0)]
+    canny_threshold_high: f32,
+
+    #[arg(long, value_name = "NO_COLOUR", default_value_t = false)]
+    no_colour: bool,
+
+    #[arg(long, value_name = "OUTPUT_EDGES", default_value_t = false)]
+    output_edges: bool,
 
     #[arg(long, value_name = "SEED", default_value = "1234567890")]
     seed: u64,
@@ -70,17 +82,20 @@ fn main() -> Result<()> {
 
     let edges = canny(
         &img.to_luma8(),
-        args.canny_low_threshold,
-        args.canny_high_threshold,
+        args.canny_threshold_low,
+        args.canny_threshold_high,
     );
     let edges_img = DynamicImage::from(edges);
 
     let mut ascii_img = ascii::ASCIIimg::init(
         img,
         args.light_chars,
-        args.heavy_chars,
-        args.edge_char,
-        args.luma_threshold,
+        args.medium_chars,
+        args.dark_chars,
+        args.edge_chars,
+        args.luma_threshold_mid,
+        args.luma_threshold_high,
+        args.no_colour,
     );
 
     let mut prng = StdRng::seed_from_u64(args.seed);
