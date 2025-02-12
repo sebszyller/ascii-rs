@@ -1,3 +1,4 @@
+mod args;
 mod ascii;
 mod img;
 
@@ -11,56 +12,10 @@ use tracing::debug;
 use tracing_subscriber::filter::LevelFilter;
 use tracing_subscriber::{EnvFilter, FmtSubscriber};
 
-// https://docs.rs/clap/4.5.27/clap/_cookbook/typed_derive/index.html
-#[derive(Parser, Debug)]
-struct Args {
-    #[arg(required = true, value_name = "IMAGE_PATH", index = 1, value_hint = clap::ValueHint::FilePath)]
-    image: String,
-
-    #[arg(long, value_name = "MAX_WIDTH")]
-    width: Option<u32>,
-
-    #[arg(long, value_name = "MAX_HEIGHT")]
-    height: Option<u32>,
-
-    #[arg(long, value_name = "LIGHT_CHARS", default_value = "?%#@")]
-    light_chars: String,
-
-    #[arg(long, value_name = "MEDIUM_CHARS", default_value = "DOS")]
-    medium_chars: String,
-
-    #[arg(long, value_name = "DARK_CHARS", default_value = ".,")]
-    dark_chars: String,
-
-    #[arg(long, value_name = "EDGE_CHARS", default_value = "/\\")]
-    edge_chars: String,
-
-    #[arg(long, value_name = "LUMINANCE_THRESHOLD_MID", default_value_t = 50.0)]
-    luma_threshold_mid: f32,
-
-    #[arg(long, value_name = "LUMINANCE_THRESHOLD_HIGH", default_value_t = 95.0)]
-    luma_threshold_high: f32,
-
-    #[arg(long, value_name = "CANNY_THRESHOLD_LOW", default_value_t = 10.0)]
-    canny_threshold_low: f32,
-
-    #[arg(long, value_name = "CANNY_THRESHOLD_HIGH", default_value_t = 50.0)]
-    canny_threshold_high: f32,
-
-    #[arg(long, value_name = "NO_COLOUR", default_value_t = false)]
-    no_colour: bool,
-
-    #[arg(long, value_name = "OUTPUT_EDGES", default_value_t = false)]
-    output_edges: bool,
-
-    #[arg(long, value_name = "SEED", default_value = "1234567890")]
-    seed: u64,
-}
-
 fn main() -> Result<()> {
     configure_tracing().with_context(|| "Failed to configure tracing")?;
 
-    let args = Args::parse();
+    let args = args::Args::parse();
     debug!("{args:?}");
 
     let mut img = img::read_image(&args.image)?;
