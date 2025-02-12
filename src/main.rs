@@ -87,8 +87,7 @@ fn main() -> Result<()> {
     );
     let edges_img = DynamicImage::from(edges);
 
-    let mut ascii_img = ascii::ASCIIimg::init(
-        img,
+    let mut ascii_transform = ascii::AsciiTransform::init(
         args.light_chars,
         args.medium_chars,
         args.dark_chars,
@@ -99,7 +98,7 @@ fn main() -> Result<()> {
     );
 
     let mut prng = StdRng::seed_from_u64(args.seed);
-    ascii_img.to_ascii(&edges_img, &mut prng);
+    ascii_transform.to_ascii(&img, &edges_img, &mut prng);
 
     if args.output_edges {
         edges_img
