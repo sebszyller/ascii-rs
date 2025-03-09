@@ -46,7 +46,7 @@ impl AsciiTransform {
             let colored = if self.no_colour {
                 ch.white()
             } else {
-                ch.truecolor(pixel[0], pixel[1], pixel[2])
+                ch.truecolor(pixel[0], pixel[1], pixel[2]) // FIXME: printing colours by hand means one less dependency
             };
             print!("{}", colored);
             if x == line_width {

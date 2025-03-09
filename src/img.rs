@@ -1,7 +1,7 @@
 use std::fs::File;
 use std::io::BufReader;
 
-use anyhow::{Context, Result};
+use anyhow::{anyhow, Context, Result};
 use image::{DynamicImage, GenericImageView, GrayImage, ImageReader, Pixels};
 
 pub fn read_image(img_path: &str) -> Result<DynamicImage> {
@@ -20,18 +20,18 @@ pub fn read_image(img_path: &str) -> Result<DynamicImage> {
 
 pub fn downsize(img: &DynamicImage, width: u32, height: u32) -> Result<DynamicImage> {
     if width > img.width() {
-        return Err(anyhow::anyhow!(
+        return Err(anyhow!(
             "Provided width larger than the image width! ({} > {})",
             width,
             img.width()
-        ))?;
+        ));
     }
     if height > img.height() {
-        return Err(anyhow::anyhow!(
+        return Err(anyhow!(
             "Provided height larger than the image height! ({} > {})",
             height,
             img.height()
-        ))?;
+        ));
     }
     Ok(img.resize(width, height, image::imageops::FilterType::Lanczos3))
 }

@@ -53,7 +53,7 @@ fn main() -> Result<()> {
     );
 
     let mut prng = StdRng::seed_from_u64(args.seed);
-    ascii_transform.to_ascii(&img, &edges_img, &mut prng);
+    ascii_transform.to_ascii(&img, &edges_img, &mut prng); // TODO: this should return a string not print
 
     if args.output_edges {
         edges_img
@@ -77,6 +77,5 @@ fn configure_tracing() -> Result<()> {
         .with_line_number(true)
         .finish();
 
-    tracing::subscriber::set_global_default(subscriber)?;
-    Ok(())
+    Ok(tracing::subscriber::set_global_default(subscriber)?)
 }
