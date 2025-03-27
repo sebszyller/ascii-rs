@@ -5,6 +5,8 @@
 It aims to speed up the manual and low resolution process.
 Without relying purely on colour and negative space information like many shader-based solutions.
 
+<img width="675" alt="tom" src="https://github.com/user-attachments/assets/1c7df11d-5154-4a25-9fb0-665fb9f35cae" />
+
 ## 🛠️ Usage
 
 Just `git clone` and `cargo build` however you want.
@@ -66,21 +68,21 @@ See recipes.
 
 `cargo run -- test_inputs/godfather.jpg  --width=200 --luma-threshold-mid 100 --luma-threshold-high 175`
 
-| placeholder.jpg | placeholder.jpg |
+| <img width="896" alt="godfather_bw" src="https://github.com/user-attachments/assets/8f82e3f1-661e-4b91-8668-052f9bfd618d" /> | <img width="898" alt="godfather" src="https://github.com/user-attachments/assets/28189862-a9c9-4a40-93fa-ead98260d49b" /> |
 |:---:|:---:|
 
 `cargo run -- test_inputs/nyc.jpg --width 250 --luma-threshold-mid 50 --luma-threshold-high 170 --no-colour`
 
 `cargo run -- test_inputs/nyc.jpg --width 250 --luma-threshold-mid 50 --luma-threshold-high 170`
 
-| placeholder.jpg | placeholder.jpg |
+| <img width="1123" alt="nyc_bw" src="https://github.com/user-attachments/assets/67714cc1-c726-4162-b0ff-50cf809a8b1c" /> | <img width="1122" alt="nyc" src="https://github.com/user-attachments/assets/b721a568-4b51-40a3-a3b3-9ea90a5ae8aa" /> |
 |:---:|:---:|
 
 `cargo run -- test_inputs/tom.jpg  --width=150 --luma-threshold-mid 100 --luma-threshold-high 175`
 
 `cargo run -- test_inputs/tom.jpg  --width=150 --luma-threshold-mid 100 --luma-threshold-high 175 --no-colour`
 
-| placeholder.jpg | placeholder.jpg |
+| <img width="675" alt="tom_bw" src="https://github.com/user-attachments/assets/1d8302a8-952e-479b-a5bb-f17dcd02433f" /> | <img width="675" alt="tom" src="https://github.com/user-attachments/assets/8287ccce-5307-455d-98de-0442ba1ebd2b" /> |
 |:---:|:---:|
 
 ## 🚀 Feature milestones
