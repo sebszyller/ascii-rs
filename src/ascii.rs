@@ -1,4 +1,3 @@
-use colored::Colorize;
 use image::{DynamicImage, GenericImageView, Rgb};
 use rand::rngs::StdRng;
 use rand::seq::IndexedRandom;
@@ -44,9 +43,9 @@ impl AsciiTransform {
             let ch = self.choose_char(pixel, &edge_pixel, prng);
 
             let colored = if self.no_colour {
-                ch.white()
+                ch
             } else {
-                ch.truecolor(pixel[0], pixel[1], pixel[2]) // FIXME: printing colours by hand means one less dependency
+                self.truecolor_string(&ch, pixel)
             };
             print!("{}", colored);
             if x == line_width {
@@ -76,5 +75,12 @@ impl AsciiTransform {
 
     fn random_char(&self, options: &Vec<String>, prng: &mut StdRng) -> String {
         options.choose(prng).unwrap().to_owned()
+    }
+
+    fn truecolor_string(&self, char: &str, pixel: &Rgb<u8>) -> String {
+        format!(
+            "\x1b[38;2;{};{};{}m{}\x1b[0m",
+            pixel[0], pixel[1], pixel[2], char
+        )
     }
 }
